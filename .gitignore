@@ -70,3 +70,8 @@ il2cppOutput/
 *.exe
 *.app
 *.unitypackage
+
+# ===============================
+# Third-party asset packs (not tracked)
+# ===============================
+Furniture Mega Pack/
