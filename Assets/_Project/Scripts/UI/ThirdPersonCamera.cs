@@ -3,11 +3,11 @@ using UnityEngine;
 public class ThirdPersonCameraFollow : MonoBehaviour
 {
     public Transform target; // Player
-    public Vector3 offset = new Vector3(0f, 2f, -4f);
+    public Vector3 offset = new Vector3(0f, 0f, 0f);
     public float followSmoothTime = 0.08f;
 
     [Header("Pitch")]
-    public float pitch = 12f; // degrees, slight downward angle
+    public float pitch = 5f; // degrees, slight downward angle
 
     private Vector3 velocity;
 
