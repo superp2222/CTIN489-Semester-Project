@@ -1,0 +1,77 @@
+# ===============================
+# Unity generated
+# ===============================
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Mm]emoryCaptures/
+UserSettings/
+
+# ===============================
+# Visual Studio / Rider / VSCode
+# ===============================
+.vs/
+.vscode/
+.idea/
+*.suo
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# ===============================
+# OS generated
+# ===============================
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# ===============================
+# Crash reports
+# ===============================
+sysinfo.txt
+
+# ===============================
+# Unity meta backup files
+# ===============================
+*.pidb.meta
+*.pdb.meta
+*.mdb.meta
+
+# ===============================
+# Addressables (if used later)
+# ===============================
+AddressableAssetsData/*/*.bin*
+
+# ===============================
+# IL2CPP builds
+# ===============================
+il2cppOutput/
+
+# ===============================
+# Packages lock
+# (Keep Packages-lock.json tracked!)
+# ===============================
+
+# ===============================
+# Ignore local test builds
+# ===============================
+*.apk
+*.aab
+*.exe
+*.app
+*.unitypackage
+
+# ===============================
+# Third-party asset packs (not tracked)
+# ===============================
+Furniture Mega Pack/

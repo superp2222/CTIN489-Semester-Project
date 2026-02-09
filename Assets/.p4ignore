@@ -1,0 +1,15 @@
+# Unity / VS / Rider / build artifacts
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+.vs/
+*.csproj
+*.sln
+*.slnx
+*.user
+*.cache
+.DS_Store
