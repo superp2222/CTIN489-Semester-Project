@@ -5,6 +5,7 @@ public class GameState : MonoBehaviour
     public static GameState Instance { get; private set; }
 
     public bool HasKey { get; private set; }
+    public bool HasGroundKey{get; private set;}
 
     void Awake()
     {
@@ -20,5 +21,10 @@ public class GameState : MonoBehaviour
     public void SetHasKey(bool value)
     {
         HasKey = value;
+    }
+
+    public void ResetRun()
+    {
+        HasKey = false;
     }
 }

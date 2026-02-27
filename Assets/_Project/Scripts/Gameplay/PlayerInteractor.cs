@@ -1,23 +1,45 @@
 using UnityEngine;
+using TMPro;
 
 public class PlayerInteractor : MonoBehaviour
 {
     [Header("Interaction")]
     public KeyCode interactKey = KeyCode.E;
 
+    [Header("UI")]
+    public TMP_Text interactionPrompt;
+
     private IInteractable current;
 
     void Update()
     {
-        if (current != null && Input.GetKeyDown(interactKey))
+        if (interactionPrompt == null) return;
+
+        if (current != null)
         {
-            current.Interact();
+            interactionPrompt.gameObject.SetActive(true);
+            interactionPrompt.text = current.GetPrompt();
+
+            if (Input.GetKeyDown(interactKey))
+            {
+                // Cache current, then clear immediately so UI can't stick if the object disables itself
+                var interacted = current;
+                current = null;
+
+                interactionPrompt.gameObject.SetActive(false);
+
+                interacted.Interact();
+            }
+
+        }
+        else
+        {
+            interactionPrompt.gameObject.SetActive(false);
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // Look for any interactable on this object or its parents
         current = other.GetComponentInParent<IInteractable>();
     }
 
@@ -28,12 +50,12 @@ public class PlayerInteractor : MonoBehaviour
             current = null;
     }
 
-    // Optional: quick debug so you know it's working
-    void OnGUI()
+    // Nice to have: clears prompt when this component gets disabled (switching characters)
+    private void OnDisable()
     {
-        if (current != null)
-        {
-            GUI.Label(new Rect(20, 20, 400, 30), current.GetPrompt());
-        }
+        if (interactionPrompt != null)
+            interactionPrompt.gameObject.SetActive(false);
+
+        current = null;
     }
 }

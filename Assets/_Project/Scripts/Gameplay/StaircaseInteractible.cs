@@ -1,11 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class StaircaseInteractable : MonoBehaviour, IInteractable
 {
     [Header("Messages")]
     public string missingKeyMessage = "I should find the key first...";
-    public string endMessage = "END OF PROTOTYPE";
-    public float messageDuration = 3.0f;
+    public float messageDuration = 2.0f;
+
+    [Header("Scene Transition")]
+    public string nextSceneName = "GroundFloor";
 
     public void Interact()
     {
@@ -18,8 +21,8 @@ public class StaircaseInteractable : MonoBehaviour, IInteractable
             return;
         }
 
-        if (MessageUI.Instance != null)
-            MessageUI.Instance.ShowMessage(endMessage, messageDuration);
+        // Load next scene
+        SceneManager.LoadScene(nextSceneName);
     }
 
     public string GetPrompt()
