@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -20,13 +21,13 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         // Reload current scene
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Keyboard.current.rKey.wasPressedThisFrame)
         {
             ReloadScene();
         }
 
-        // Quit application
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Quit application  
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             QuitGame();
         }

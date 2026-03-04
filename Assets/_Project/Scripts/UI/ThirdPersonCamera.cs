@@ -1,31 +1,42 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class ThirdPersonCameraFollow : MonoBehaviour
 {
     [Header("Target")]
-    public Transform target; // active character
+    public Transform target;
 
     [Header("Rig Offset (relative to target)")]
     public Vector3 offset = new Vector3(0f, 1.6f, 0f);
     public float followSmoothTime = 0.08f;
 
     [Header("Pitch")]
-    public float pitch = 5f; // degrees
+    [Tooltip("Default vertical angle (15–20 feels good for 3rd person).")]
+    public float pitch = 15f;
+
+    public float minPitch = -40f;
+    public float maxPitch = 75f;
+    public float pitchSensitivity = 0.1f;
+    public float pitchSmoothSpeed = 12f;
+
+    private float pitchVelocity;
 
     [Header("Camera Child")]
-    public Transform cam;                 // assign Main Camera (child of this rig)
-    public float desiredCameraDistance = 4.0f; // how far back the camera wants to be
-    public float minCameraDistance = 0.6f;     // how close it can get
+    public Transform cam;
+    public float desiredCameraDistance = 4.0f;
+    public float minCameraDistance = 0.6f;
     public float zoomSmoothTime = 0.05f;
 
     [Header("Collision")]
     public float probeRadius = 0.25f;
-    public LayerMask collisionMask = ~0;  // set to Environment layer(s) recommended
+    public LayerMask collisionMask = ~0;
     public float collisionBuffer = 0.05f;
 
     private Vector3 velocity;
     private float currentDistance;
     private float distanceVelocity;
+
+    private float smoothPitch;
 
     void Awake()
     {
@@ -33,34 +44,48 @@ public class ThirdPersonCameraFollow : MonoBehaviour
             cam = Camera.main.transform;
 
         currentDistance = desiredCameraDistance;
+        smoothPitch = pitch; // ensure clean startup
     }
 
     void LateUpdate()
     {
         if (target == null || cam == null) return;
 
-        // 1) Follow rig position behind/around the target (relative to target rotation)
+        // ===== MOUSE INPUT =====
+        Vector2 mouseDelta = Mouse.current.delta.ReadValue();
+        float mouseY = mouseDelta.y * pitchSensitivity;
+
+        pitch -= mouseY;
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+
+        smoothPitch = Mathf.SmoothDamp(
+            smoothPitch,
+            pitch,
+            ref pitchVelocity,
+            1f / pitchSmoothSpeed
+        );
+
+        // ===== FOLLOW POSITION =====
         Vector3 desiredPos = target.position + target.TransformDirection(offset);
         transform.position = Vector3.SmoothDamp(transform.position, desiredPos, ref velocity, followSmoothTime);
 
-        // 2) Match target yaw + fixed pitch
-        transform.rotation = Quaternion.Euler(pitch, target.eulerAngles.y, 0f);
+        // ===== ROTATION =====
+        transform.rotation = Quaternion.Euler(smoothPitch, target.eulerAngles.y, 0f);
 
-        // 3) Camera collision: spherecast from pivot (rig) backward to desired camera distance
+        // ===== COLLISION =====
         Vector3 pivot = transform.position;
         Vector3 backDir = -transform.forward;
 
         float targetDist = desiredCameraDistance;
 
-        if (Physics.SphereCast(pivot, probeRadius, backDir, out RaycastHit hit, desiredCameraDistance, collisionMask, QueryTriggerInteraction.Ignore))
+        if (Physics.SphereCast(pivot, probeRadius, backDir, out RaycastHit hit,
+            desiredCameraDistance, collisionMask, QueryTriggerInteraction.Ignore))
         {
             targetDist = Mathf.Clamp(hit.distance - collisionBuffer, minCameraDistance, desiredCameraDistance);
         }
 
-        // 4) Smoothly adjust distance, then apply camera local position
         currentDistance = Mathf.SmoothDamp(currentDistance, targetDist, ref distanceVelocity, zoomSmoothTime);
 
-        // Keep camera centered on rig axis (local)
         cam.localPosition = new Vector3(0f, 0f, -currentDistance);
         cam.localRotation = Quaternion.identity;
     }

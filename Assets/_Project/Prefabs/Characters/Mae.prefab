@@ -127,7 +127,11 @@ MonoBehaviour:
   moveSpeed: 10
   gravity: -20
   jumpHeight: 2
-  mouseSensitivity: 2
+  mouseSensitivity: 0.1
+  crouchSpeed: 2.5
+  sprintSpeed: 12
+  crouchHeightMultiplier: 0.5
+  standClearance: 0.05
   audioSource: {fileID: 8770146092260480590}
   jumpSFX: {fileID: 8300000, guid: c28d653a2aff01e4c92a99599a5f55fd, type: 3}
 --- !u!143 &504067135829273331

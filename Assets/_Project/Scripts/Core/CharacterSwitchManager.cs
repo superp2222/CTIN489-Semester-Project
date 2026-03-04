@@ -1,5 +1,6 @@
 // CharacterSwitchManager.cs
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CharacterSwitchManager : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class CharacterSwitchManager : MonoBehaviour
     public LilyMeter lilyMeter;
 
     [Header("Input")]
+    [Tooltip("This field is deprecated - using Keyboard directly for T key")]
     public KeyCode switchKey = KeyCode.T;
 
     private bool sisterIsActive = false;
@@ -44,7 +46,7 @@ public class CharacterSwitchManager : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(switchKey))
+        if (Keyboard.current.tKey.wasPressedThisFrame)
         {
             // Only allow swap to sister if LilyMeter allows
             if (!sisterIsActive && lilyMeter != null && !lilyMeter.CanSwapToSister())

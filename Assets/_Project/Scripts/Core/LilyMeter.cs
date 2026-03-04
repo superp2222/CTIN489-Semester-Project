@@ -1,6 +1,7 @@
 // LilyMeter.cs
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using TMPro;
 
 public class LilyMeter : MonoBehaviour
@@ -12,6 +13,7 @@ public class LilyMeter : MonoBehaviour
     public float rechargeTime = 10f;
 
     [Header("Interaction")]
+    [Tooltip("This field is deprecated - using Interact action from Input System")]
     public KeyCode pickUpKey = KeyCode.E;
     public float pickupRange = 2f;
 
@@ -48,6 +50,7 @@ public class LilyMeter : MonoBehaviour
         timer = rechargeTime;
         canSwap = true;
         isPickedUp = false;
+
         isSisterControlled = false;
 
         if (cutsceneDialogue != null)
@@ -158,7 +161,7 @@ public class LilyMeter : MonoBehaviour
         }
 
         // Pickup
-        if (inRange && Input.GetKeyDown(pickUpKey))
+        if (inRange && Keyboard.current.eKey.wasPressedThisFrame)
         {
             isPickedUp = true;
 

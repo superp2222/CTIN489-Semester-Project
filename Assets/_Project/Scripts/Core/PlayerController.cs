@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -11,7 +12,7 @@ public class PlayerController : MonoBehaviour
     public float jumpHeight = 1.2f;
 
     [Header("Mouse Look")]
-    public float mouseSensitivity = 2.0f;
+    public float mouseSensitivity = 0.1f;
 
     [Header("Jump Audio")]
     public AudioSource audioSource;
@@ -24,11 +25,9 @@ public class PlayerController : MonoBehaviour
     public float crouchSpeed = 2.5f;
     public float sprintSpeed = 8f;
 
-    [Tooltip("Multiplier on CharacterController height while crouching (e.g., 0.5 = half height).")]
     [Range(0.2f, 1f)]
     public float crouchHeightMultiplier = 0.5f;
 
-    [Tooltip("Extra clearance required to stand up (small helps avoid ceiling clipping).")]
     public float standClearance = 0.05f;
 
     private bool isCrouching = false;
@@ -54,50 +53,45 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // Mouse yaw rotates the player
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+        // ===== YAW LOOK =====
+        Vector2 lookInput = Mouse.current.delta.ReadValue();
+        float mouseX = lookInput.x * mouseSensitivity;
         transform.Rotate(Vector3.up * mouseX);
 
-        // Toggle crouch
-        if (Input.GetKeyDown(KeyCode.C))
+        // ===== CROUCH =====
+        if (Keyboard.current.cKey.wasPressedThisFrame)
         {
             if (!isCrouching)
-            {
                 SetCrouch(true);
-            }
-            else
-            {
-                // Only stand if there is room
-                if (CanStandUp())
-                    SetCrouch(false);
-            }
+            else if (CanStandUp())
+                SetCrouch(false);
         }
 
-        // Toggle sprint (optionally disable sprint while crouched)
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.RightShift))
-        {
+        // ===== SPRINT =====
+        if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
             isSprinting = !isSprinting;
-        }
 
-        // WASD movement relative to player facing
-        float x = Input.GetAxisRaw("Horizontal");
-        float z = Input.GetAxisRaw("Vertical");
+        // ===== MOVEMENT =====
+        float x = 0f;
+        float z = 0f;
+        if (Keyboard.current.wKey.isPressed) z += 1f;
+        if (Keyboard.current.sKey.isPressed) z -= 1f;
+        if (Keyboard.current.aKey.isPressed) x -= 1f;
+        if (Keyboard.current.dKey.isPressed) x += 1f;
+
         Vector3 move = (transform.right * x + transform.forward * z).normalized;
 
         float currentSpeed = moveSpeed;
-        if (isCrouching)
-            currentSpeed = crouchSpeed;
-        else if (isSprinting)
-            currentSpeed = sprintSpeed;
+        if (isCrouching) currentSpeed = crouchSpeed;
+        else if (isSprinting) currentSpeed = sprintSpeed;
 
         if (controller.isGrounded && verticalVelocity < 0f)
             verticalVelocity = -2f;
 
-        // Jump (usually you disallow jumping while crouched; optional)
-        if (controller.isGrounded && Input.GetKeyDown(KeyCode.Space) && canJump && !isCrouching)
+        if (controller.isGrounded && Keyboard.current.spaceKey.wasPressedThisFrame && canJump && !isCrouching)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            if (audioSource != null && jumpSFX != null)
+            if (audioSource && jumpSFX)
                 audioSource.PlayOneShot(jumpSFX);
         }
 
@@ -108,7 +102,7 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Keyboard.current.escapeKey.wasPressedThisFrame)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -124,9 +118,8 @@ public class PlayerController : MonoBehaviour
             float newHeight = originalHeight * crouchHeightMultiplier;
             controller.height = newHeight;
 
-            // Keep feet on ground: lower the center by half the height difference
-            float centerOffsetY = (originalHeight - newHeight) * 0.5f;
-            controller.center = originalCenter - new Vector3(0f, centerOffsetY, 0f);
+            float offset = (originalHeight - newHeight) * 0.5f;
+            controller.center = originalCenter - new Vector3(0, offset, 0);
         }
         else
         {
@@ -137,17 +130,15 @@ public class PlayerController : MonoBehaviour
 
     bool CanStandUp()
     {
-        // Cast upward from current capsule top to see if we have space to return to original height.
         float radius = controller.radius;
         float currentHeight = controller.height;
         float targetHeight = originalHeight;
 
         if (targetHeight <= currentHeight) return true;
 
-        float extraHeightNeeded = (targetHeight - currentHeight) + standClearance;
-
-        // We raycast from just above the head so we don't instantly hit ourselves.
+        float extra = (targetHeight - currentHeight) + standClearance;
         Vector3 origin = transform.position + controller.center + Vector3.up * (currentHeight * 0.5f);
-        return !Physics.SphereCast(origin, radius, Vector3.up, out _, extraHeightNeeded, ~0, QueryTriggerInteraction.Ignore);
+
+        return !Physics.SphereCast(origin, radius, Vector3.up, out _, extra, ~0, QueryTriggerInteraction.Ignore);
     }
 }
