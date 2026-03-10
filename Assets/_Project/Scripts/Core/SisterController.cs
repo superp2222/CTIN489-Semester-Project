@@ -51,12 +51,10 @@ public class SisterController : MonoBehaviour
 
     void Update()
     {
-        // ===== YAW =====
         Vector2 lookInput = Mouse.current.delta.ReadValue();
         float mouseX = lookInput.x * mouseSensitivity;
         transform.Rotate(Vector3.up * mouseX);
 
-        // ===== CROUCH =====
         if (Keyboard.current.cKey.wasPressedThisFrame)
         {
             if (!isCrouching)
@@ -65,11 +63,9 @@ public class SisterController : MonoBehaviour
                 SetCrouch(false);
         }
 
-        // ===== SPRINT =====
         if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
             isSprinting = !isSprinting;
 
-        // ===== MOVEMENT =====
         float x = 0f;
         float z = 0f;
         if (Keyboard.current.wKey.isPressed) z += 1f;

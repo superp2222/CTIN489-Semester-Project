@@ -30,6 +30,7 @@ public class CharacterSwitchManager : MonoBehaviour
     public KeyCode switchKey = KeyCode.T;
 
     private bool sisterIsActive = false;
+    private bool isInitialized = false;
 
     void Awake()
     {
@@ -42,6 +43,7 @@ public class CharacterSwitchManager : MonoBehaviour
     {
         // Default: brother active at start
         SetActiveCharacter(isSisterActive: false);
+        isInitialized = true;
     }
 
     void Update()
@@ -79,9 +81,10 @@ public class CharacterSwitchManager : MonoBehaviour
             sisterFollow.target = brother; // per your spec: she follows the brother
         }
 
-        // Optional: snap sister near brother when switching away from her
+        // Optional: snap sister near brother when switching away from her DURING GAMEPLAY
         // (prevents her being left behind if you switched while far away)
-        if (!sisterIsActive && sister != null && brother != null)
+        // BUT: only do this if game is already initialized, not on scene startup
+        if (!sisterIsActive && sister != null && brother != null && isInitialized)
         {
             // Keep her close-ish, but not overlapping
             Vector3 behind = -brother.forward * 1.0f + brother.right * 0.6f;

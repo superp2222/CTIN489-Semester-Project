@@ -1111,6 +1111,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e93ba3a749b5e142a5c27f302958d58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ControlsHint
+  showHintInScene: 1
   controlsText: {fileID: 1491362688}
   panelRoot: {fileID: 1237951062}
   message: 'WASD to move
@@ -1891,7 +1892,7 @@ MonoBehaviour:
   titleDuration: 3
   fader: {fileID: 643484558}
   fadeTime: 1.5
-  sceneToLoad: Room
+  sceneToLoad: HospitalCutscene1
   disableOnSleep: []
 --- !u!65 &815819155
 BoxCollider:

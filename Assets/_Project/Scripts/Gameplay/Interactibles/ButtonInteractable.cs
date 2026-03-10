@@ -16,6 +16,9 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
     public Animator buttonAnimator;
     public string pressTriggerName = "Press";
 
+    [Header("Optional Activators")]
+    public Lightswitch lightswitch;
+
     private bool pressed = false;
 
     void Awake()
@@ -27,6 +30,8 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
     public void Interact()
     {
         if (canPressOnlyOnce && pressed) return;
+        if (lightswitch != null)
+            lightswitch.Activate();
 
         pressed = true;
 

@@ -6,7 +6,11 @@ using TMPro;
 
 public class LilyMeter : MonoBehaviour
 {
-    public enum LilyState { Active, Tired, Recharging }
+    public enum LilyState { Active, Tired, Recharging, Static }
+
+    [Header("Start State")]
+    [Tooltip("Choose which state Lily begins in when the scene starts.")]
+    public LilyState startState = LilyState.Tired;
 
     [Header("Timing")]
     public float maxActiveTime = 30f;
@@ -22,7 +26,6 @@ public class LilyMeter : MonoBehaviour
     [HideInInspector] public bool canSwap = true;
     [HideInInspector] public bool isPickedUp = false;
 
-    // NEW: track who is currently controlled
     [HideInInspector] public bool isSisterControlled = false;
 
     [Header("References")]
@@ -39,19 +42,12 @@ public class LilyMeter : MonoBehaviour
     public TMP_Text cutsceneDialogueText;
     public TMP_Text interactionPromptText;
 
-
     private bool lilyPromptOwned = false;
-
     Coroutine dialogueRoutine;
 
     void Start()
     {
-        state = LilyState.Recharging;
-        timer = rechargeTime;
-        canSwap = true;
-        isPickedUp = false;
-
-        isSisterControlled = false;
+        ApplyStartState();
 
         if (cutsceneDialogue != null)
             cutsceneDialogue.SetActive(false);
@@ -63,12 +59,56 @@ public class LilyMeter : MonoBehaviour
             lilyTimerText.gameObject.SetActive(false);
     }
 
+    void ApplyStartState()
+    {
+        // Default assumptions: player (Sawyer) starts controlled
+        isSisterControlled = false;
+
+        isPickedUp = false;
+
+        if (sisterFollow != null)
+            sisterFollow.enabled = false;
+
+        if (playerController != null)
+            playerController.canJump = true;
+
+        state = startState;
+
+        switch (startState)
+        {
+            case LilyState.Active:
+                canSwap = true;
+                timer = maxActiveTime;
+                break;
+
+            case LilyState.Recharging:
+                canSwap = false;
+                timer = rechargeTime;
+                isPickedUp = true;
+                if (sisterFollow != null)
+                    sisterFollow.enabled = true;
+                if (playerController != null)
+                    playerController.canJump = false;
+                break;
+
+            case LilyState.Tired:
+                canSwap = false;
+                timer = 0f;
+                break;
+
+            case LilyState.Static:
+                // Static: stands still, can be picked up, NO UI, NO swapping, NO countdown/teleport
+                canSwap = false;
+                timer = 0f;
+                break;
+        }
+    }
+
     void Update()
     {
         UpdateLilyTimerUI();
 
-        // PAUSE the ACTIVE countdown while Sawyer is controlled
-        // (Recharging/Tired still run so pickup & recharge work while Sawyer is active.)
+        // Pause ACTIVE countdown while Sawyer is controlled
         if (state == LilyState.Active && !isSisterControlled)
             return;
 
@@ -79,7 +119,13 @@ public class LilyMeter : MonoBehaviour
                 break;
 
             case LilyState.Tired:
-                HandleTired();
+                HandleTired(showPrompt: true);
+                break;
+
+            case LilyState.Static:
+                // Static behaves like tired for pickup interaction, but with NO UI.
+                // Most importantly: it NEVER becomes Active unless something external forces it.
+                HandleTired(showPrompt: false);
                 break;
 
             case LilyState.Recharging:
@@ -92,8 +138,6 @@ public class LilyMeter : MonoBehaviour
     {
         if (lilyTimerText == null) return;
 
-        // Show "Lily: Xs left" ONLY while Lily is controlled.
-        // Optionally show recharge while being carried (even if Sawyer controlled).
         bool show = false;
         string text = "";
 
@@ -115,7 +159,6 @@ public class LilyMeter : MonoBehaviour
     void HandleActive()
     {
         timer -= Time.deltaTime;
-
         if (timer > 0f) return;
 
         // Sister gets tired
@@ -123,8 +166,8 @@ public class LilyMeter : MonoBehaviour
         timer = 0f;
         canSwap = false;
 
-        // Teleport sister to player and force swap
-        if (sister != null && player != null)
+        // Only teleport if NOT in Static mode - Static stays in place until picked up
+        if (state != LilyState.Static && sister != null && player != null)
             sister.position = player.position + player.forward * 1.0f;
 
         if (switchManager != null)
@@ -133,16 +176,18 @@ public class LilyMeter : MonoBehaviour
         if (sisterFollow != null)
             sisterFollow.enabled = false;
 
-        // Show dialogue panel for 3 seconds
         StartDialogue("Lily: Sawyer, I'm tired...\n(Press E to pick up Lily)", 3f);
     }
 
-    void HandleTired()
+    void HandleTired(bool showPrompt)
     {
+        // Lily should NEVER follow when tired or static
+        if (sisterFollow != null)
+            sisterFollow.enabled = false;
+
         bool inRange = IsPlayerInPickupRange();
 
-        // Prompt (ONLY while tired)
-        if (interactionPromptText != null)
+        if (showPrompt && interactionPromptText != null)
         {
             if (inRange)
             {
@@ -151,7 +196,6 @@ public class LilyMeter : MonoBehaviour
             }
             else
             {
-                // Only clear if LilyMeter wrote it
                 if (lilyPromptOwned)
                 {
                     interactionPromptText.text = "";
@@ -160,7 +204,6 @@ public class LilyMeter : MonoBehaviour
             }
         }
 
-        // Pickup
         if (inRange && Keyboard.current.eKey.wasPressedThisFrame)
         {
             isPickedUp = true;
@@ -174,7 +217,6 @@ public class LilyMeter : MonoBehaviour
             if (playerController != null)
                 playerController.canJump = false;
 
-            // Clear prompt if we owned it
             if (interactionPromptText != null && lilyPromptOwned)
             {
                 interactionPromptText.text = "";
@@ -185,11 +227,9 @@ public class LilyMeter : MonoBehaviour
                 cutsceneDialogue.SetActive(false);
         }
     }
+
     void HandleRecharging()
     {
-        // DO NOT clear interactionPromptText here.
-        // The PlayerInteractor needs to use it for keys/doors/etc.
-
         if (!isPickedUp) return;
 
         timer -= Time.deltaTime;
@@ -203,6 +243,9 @@ public class LilyMeter : MonoBehaviour
 
         state = LilyState.Active;
         timer = maxActiveTime;
+
+        if (sisterFollow != null)
+            sisterFollow.enabled = false;
     }
 
     bool IsPlayerInPickupRange()
@@ -234,11 +277,22 @@ public class LilyMeter : MonoBehaviour
     // Called by CharacterSwitchManager when Lily becomes the controlled character
     public void OnSisterActivated()
     {
+        // If Lily is Static, she must NEVER enter Active (prevents later teleport)
+        if (state == LilyState.Static)
+        {
+            isSisterControlled = false;
+
+            // Optional: if something tried to switch to Lily anyway, force back to Sawyer
+            if (switchManager != null)
+                switchManager.ForceSwitchToPlayer();
+
+            return;
+        }
+
         isSisterControlled = true;
 
         if (!canSwap) return;
 
-        // IMPORTANT: do NOT reset timer if already active (prevents swapping back to Lily resetting to 30s)
         if (state != LilyState.Active)
         {
             state = LilyState.Active;
@@ -251,13 +305,12 @@ public class LilyMeter : MonoBehaviour
     {
         isSisterControlled = false;
 
-        // Optional: instantly hide UI when Sawyer is controlled
         if (lilyTimerText != null)
             lilyTimerText.gameObject.SetActive(false);
     }
 
     public bool CanSwapToSister()
     {
-        return canSwap && state != LilyState.Tired;
+        return canSwap && state != LilyState.Tired && state != LilyState.Static;
     }
 }
