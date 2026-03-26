@@ -42,7 +42,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 1
+    animationCompression: 3
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -103,7 +103,197 @@ ModelImporter:
   humanDescription:
     serializedVersion: 3
     human: []
-    skeleton: []
+    skeleton:
+    - name: Lillian_Morgan_Model_v2(Clone)
+      parentName: 
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.0328084, y: 0.0328084, z: 0.0328084}
+    - name: Lillian_Morgan
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: -0, y: 0, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Lily_Morgan_v7:Lily_Head
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: 0.07253031, y: 27.63766, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Inner_Eye
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: -1.9494725, y: 28.33935, z: 0.00522003}
+      rotation: {x: 0.07076815, y: 0.8681753, z: -0.025957424, w: -0.4904996}
+      scale: {x: 0.36637378, y: 0.26832768, z: 0.19471942}
+    - name: Lily_Morgan_v7:Arms
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: -0.16217017, y: 21.719309, z: -0.0000002906799}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Legs
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: -0.15957165, y: 13.016298, z: -0.0000002906799}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Eyes
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: -1.5529623, y: 28.42501, z: -0.8024143}
+      rotation: {x: -0.016819052, y: -0.016819052, z: 0.70690674, w: 0.70690674}
+      scale: {x: 0.052929062, y: 0.052929062, z: 0.052929062}
+    - name: Shirt
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: 0.25040346, y: 19.829899, z: 0.000000018915214}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1.0650723, y: 1.0650723, z: 1.0650723}
+    - name: Shirt_Ruffles_Lower_Layer
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: -0.25174186, y: 21.588371, z: -0.0000002906799}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1.0650723, y: 1.0650723, z: 1.0650723}
+    - name: Shirt_Ruffles_Higher_Layer
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: 0.26274663, y: 14.381735, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shorts
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: 0.22999953, y: 14.682057, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shorts_Ruffles_Lower_Layer
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: 0.9714531, y: 11.358142, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Shorts_Ruffles_Higher_Layer
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: 0.9588355, y: 11.064974, z: 2.0392587}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:Shoes
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: -0.17624886, y: 3.7888196, z: 0}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.8001184, y: 0.85506415, z: 0.85506415}
+    - name: Hair
+      parentName: Lillian_Morgan_Model_v2(Clone)
+      position: {x: 0.46959698, y: 28.226591, z: -0.65458596}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.8520354, y: 0.8520354, z: 0.8520354}
+    - name: LillianBACKUP:HairStrand33
+      parentName: Hair
+      position: {x: 0.2655186, y: -0.037162222, z: 0.7865028}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand34
+      parentName: Hair
+      position: {x: -1.6277649, y: 2.8625124, z: 0.040242597}
+      rotation: {x: 0, y: -0.2287295, z: -0, w: 0.97349}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand24
+      parentName: Hair
+      position: {x: -1.8442036, y: 2.9551363, z: 0.9938794}
+      rotation: {x: 0.02930808, y: -0.64220214, z: 0.3049849, w: 0.70263916}
+      scale: {x: 0.71441865, y: 0.82322294, z: 0.96767867}
+    - name: LillianBACKUP:HairStrand25
+      parentName: Hair
+      position: {x: -0.22907786, y: 3.3524463, z: 0.19140077}
+      rotation: {x: 0.182921, y: -0.28865132, z: -0.45281118, w: 0.8235183}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand26
+      parentName: Hair
+      position: {x: 0.7744801, y: 3.3524463, z: 1.0852618}
+      rotation: {x: 0, y: 0.052457683, z: -0, w: 0.99862313}
+      scale: {x: 1, y: 1, z: -1}
+    - name: LillianBACKUP:HairStrand27
+      parentName: Hair
+      position: {x: 1.4661548, y: 2.9270632, z: 0.7113279}
+      rotation: {x: 0.011749098, y: -0.28577325, z: -0.039362602, w: 0.9574164}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand28
+      parentName: Hair
+      position: {x: 1.466155, y: 2.9270632, z: 0.711328}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: -1}
+    - name: LillianBACKUP:HairStrand29
+      parentName: Hair
+      position: {x: 1.5100174, y: 2.9270632, z: 0.9384291}
+      rotation: {x: 0, y: -0, z: -0.04625536, w: 0.9989297}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand30
+      parentName: Hair
+      position: {x: 1.5100174, y: 2.9270632, z: 0.9384291}
+      rotation: {x: 0, y: -0, z: -0.04625536, w: 0.9989297}
+      scale: {x: 1, y: 1, z: -1}
+    - name: LillianBACKUP:HairStrand31
+      parentName: Hair
+      position: {x: -2.0395494, y: 2.8625124, z: 0.18692702}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand32
+      parentName: Hair
+      position: {x: 1.5968579, y: 3.0603309, z: 1.3945695}
+      rotation: {x: 0, y: -0, z: -0.03317811, w: 0.9994495}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand
+      parentName: Hair
+      position: {x: -2.5266292, y: 1.5807999, z: 1.2465471}
+      rotation: {x: 0.14533262, y: -0.57143265, z: 0.47550064, w: 0.6528723}
+      scale: {x: 0.75287825, y: 0.5940437, z: 1}
+    - name: LillianBACKUP:HairStrand11
+      parentName: Hair
+      position: {x: -2.3192518, y: 2.512681, z: 1.1569561}
+      rotation: {x: 0.043678172, y: -0.7883552, z: 0.01639544, w: 0.61344886}
+      scale: {x: 1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand3
+      parentName: Hair
+      position: {x: -0.5520191, y: 2.9769416, z: 0.93456495}
+      rotation: {x: 0.021074504, y: -0.06849943, z: -0.04768819, w: 0.9962879}
+      scale: {x: 1, y: 1, z: -1}
+    - name: LillianBACKUP:HairStrand12
+      parentName: Hair
+      position: {x: -0.15706494, y: 3.3524463, z: 1.296618}
+      rotation: {x: -0.046741046, y: -0.030674772, z: 0.022820015, w: 0.99817514}
+      scale: {x: 1, y: 1, z: -1}
+    - name: LillianBACKUP:HairStrand13
+      parentName: Hair
+      position: {x: -3.2531805, y: 1.56271, z: 0.57416606}
+      rotation: {x: 0.3110171, y: -0.19687402, z: 0.104072504, w: 0.9239469}
+      scale: {x: 0.25752774, y: 0.3888309, z: 1}
+    - name: LillianBACKUP:HairStrand14
+      parentName: Hair
+      position: {x: -1.7404658, y: 2.584817, z: 0.11382851}
+      rotation: {x: -0.0170788, y: 0.94318366, z: -0.1980765, w: -0.26623043}
+      scale: {x: -1, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand15
+      parentName: Hair
+      position: {x: -2.6762977, y: 0.8346581, z: -0.501727}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 0.5479103, y: 1, z: 1}
+    - name: LillianBACKUP:HairStrand16
+      parentName: Hair
+      position: {x: -3.5471258, y: 1.8251007, z: 1.0547159}
+      rotation: {x: 0.33504394, y: -0.12787367, z: 0.1361742, w: 0.92349905}
+      scale: {x: 0.25752774, y: 0.3888309, z: 1}
+    - name: LillianBACKUP:HairStrand17
+      parentName: Hair
+      position: {x: -0.9813633, y: 3.445926, z: 0.53393716}
+      rotation: {x: -0.16416602, y: -0.40017757, z: 0.2757506, w: 0.8584108}
+      scale: {x: 0.71441865, y: 0.82322294, z: 0.96767867}
+    - name: LillianBACKUP:HairStrand18
+      parentName: Hair
+      position: {x: -1.4659523, y: 3.1937692, z: 0.53393716}
+      rotation: {x: -0.08081166, y: -0.5117714, z: 0.3242023, w: 0.79148746}
+      scale: {x: 0.71441865, y: 0.82322294, z: 0.96767867}
+    - name: LillianBACKUP:HairStrand19
+      parentName: Hair
+      position: {x: 0.31848443, y: 2.9979372, z: 0.8859775}
+      rotation: {x: -0.103084184, y: 0.99415463, z: 0.03208356, w: -0.00093637157}
+      scale: {x: 1, y: 1, z: -1}
+    - name: LillianBACKUP:HairStrand20
+      parentName: Hair
+      position: {x: -0.15706494, y: 3.3524463, z: 0.43000773}
+      rotation: {x: 0.004637823, y: 0.9931212, z: 0.09348909, w: 0.07034634}
+      scale: {x: 1, y: 1, z: -1}
     armTwist: 0.5
     foreArmTwist: 0.5
     upperLegTwist: 0.5
@@ -118,9 +308,9 @@ ModelImporter:
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
   autoGenerateAvatarMappingIfUnspecified: 1
-  animationType: 2
+  animationType: 3
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0

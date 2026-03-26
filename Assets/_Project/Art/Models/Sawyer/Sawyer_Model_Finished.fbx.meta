@@ -1,0 +1,300 @@
+fileFormatVersion: 2
+guid: 6c2e24bb5a3c149efaf5220d1d2e4f25
+ModelImporter:
+  serializedVersion: 24200
+  internalIDToNameTable: []
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sawyer_3D_v41_Sawyer_Face
+    second: {fileID: 2100000, guid: a79ec35510acb46c19eb738ea0e5770b, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sawyer_3D_v41_Sawyer_Pants_Libs_Render
+    second: {fileID: 2100000, guid: c47bbbf9b5505465893ae4fa631e41ca, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Sawyer_3D_v41_Shirt1
+    second: {fileID: 2100000, guid: edef9b4c88c134f039b5965ae5680e7e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: hairrrrrrRRR
+    second: {fileID: 2100000, guid: 860cc663fe6214db984999fea5be2862, type: 2}
+  materials:
+    materialImportMode: 2
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 0
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    removeConstantScaleCurves: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    sortHierarchyByName: 1
+    importPhysicalCameras: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    nodeNameCollisionStrategy: 1
+    fileIdsGeneration: 2
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    bakeAxisConversion: 0
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    optimizeBones: 1
+    generateMeshLods: 0
+    meshLodGenerationFlags: 0
+    maximumMeshLod: -1
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVMarginMethod: 1
+    secondaryUVMinLightmapResolution: 40
+    secondaryUVMinObjectScale: 1
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    strictVertexDataChecks: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton:
+    - name: Sawyer_Model_Finished(Clone)
+      parentName: 
+      position: {x: -0.00007143255, y: 0.67782414, z: 5.3290704e-17}
+      rotation: {x: 0, y: -0, z: -0.06196551, w: 0.9980783}
+      scale: {x: 0.7688696, y: 0.7688696, z: 0.7688696}
+    - name: Sawyer_3D_v41:Head
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.0035833358, y: -0.026331095, z: -6.931046e-17}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.3006107, y: 1.3006107, z: 1.3006107}
+    - name: Sawyer_3D_v41:Arms_Legs
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.08867224, y: -0.8196058, z: -6.931046e-17}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.3006107, y: 1.3006107, z: 1.3006107}
+    - name: Sawyer_3D_v41:Shorts
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.072998166, y: -0.6399217, z: -0.000000012403589}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.3006107, y: 1.3006107, z: 1.3006107}
+    - name: Sawyer_3D_v41:Eye
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: -0.08454442, y: 0.016082764, z: -0.0006696093}
+      rotation: {x: -0.027382575, y: -0.017595125, z: 0.75423026, w: 0.65580285}
+      scale: {x: 0.0769405, y: 0.0769405, z: 0.0769405}
+    - name: Sawyer_3D_v41:Inner_Eye
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: -0.08961742, y: 0.010049438, z: 0.02362735}
+      rotation: {x: -0.1207683, y: 0.9358068, z: -0.1413502, w: -0.29950082}
+      scale: {x: 0.48973313, y: 0.42253762, z: 0.26028213}
+    - name: Sawyer_3D_v41:Shirt
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.06346099, y: -0.39539272, z: -6.931046e-17}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.327681, y: 1.327681, z: 1.327681}
+    - name: Sawyer_3D_v41:Socks
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.21777731, y: -1.292457, z: -0.12752822}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.3006107, y: 1.3006107, z: 1.3006107}
+    - name: Sawyer_3D_v41:Shoe
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.14666338, y: -1.3653053, z: -0.0025492597}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.3006107, y: 1.3006107, z: 1.3006107}
+    - name: Sawyer_3D_v41:Shoe_Laces
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.120534725, y: -1.3619425, z: -0.0025492597}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.3006107, y: 1.3006107, z: 1.3006107}
+    - name: Sawyer_3D_v41:Shoe_Lace_Holes
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.118993744, y: -1.347726, z: -0.0025492597}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.3006107, y: 1.3006107, z: 1.3006107}
+    - name: Sawyer_3D_v41:Hair
+      parentName: Sawyer_Model_Finished(Clone)
+      position: {x: 0.016590957, y: 0.010267067, z: -0.026647674}
+      rotation: {x: 0, y: 0, z: 0.06196551, w: 0.9980783}
+      scale: {x: 1.1802511, y: 1.0829203, z: 1.0952842}
+    - name: Sawyer_3D_v41:HairStrand33
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: 0.008711241, y: -0.0012192331, z: 0.0258039}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand34
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.053404365, y: 0.09391445, z: 0.0013202953}
+      rotation: {x: 0, y: -0.2287295, z: -0, w: 0.97349}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand25
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.007515678, y: 0.1099884, z: 0.006279553}
+      rotation: {x: 0.182921, y: -0.28865132, z: -0.45281118, w: 0.8235183}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand26
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: 0.025409454, y: 0.1099884, z: 0.035605703}
+      rotation: {x: 0, y: 0.052457683, z: -0, w: 0.99862313}
+      scale: {x: 1, y: 1, z: -1}
+    - name: Sawyer_3D_v41:HairStrand27
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: 0.048102196, y: 0.09603226, z: 0.02333753}
+      rotation: {x: 0.011749098, y: -0.28577325, z: -0.039362602, w: 0.9574164}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand28
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: 0.0481022, y: 0.09603226, z: 0.023337536}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: -1}
+    - name: Sawyer_3D_v41:HairStrand29
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: 0.049541257, y: 0.09603226, z: 0.030788358}
+      rotation: {x: 0, y: -0, z: -0.04625536, w: 0.9989297}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand30
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: 0.049541257, y: 0.09603226, z: 0.030788358}
+      rotation: {x: 0, y: -0, z: -0.04625536, w: 0.9989297}
+      scale: {x: 1, y: 1, z: -1}
+    - name: Sawyer_3D_v41:HairStrand32
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: 0.052390356, y: 0.10040457, z: 0.0457536}
+      rotation: {x: 0, y: -0, z: -0.03317811, w: 0.9994495}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand11
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.07609095, y: 0.082437046, z: 0.037957877}
+      rotation: {x: 0.043678172, y: -0.7883552, z: 0.01639544, w: 0.61344886}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand3
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.0570023, y: 0.06371632, z: 0.068637475}
+      rotation: {x: 0.021074504, y: -0.06849943, z: -0.04768819, w: 0.9962879}
+      scale: {x: 1, y: 1, z: -1}
+    - name: Sawyer_3D_v41:HairStrand12
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.001446532, y: 0.1099884, z: 0.04253996}
+      rotation: {x: -0.046741046, y: -0.030674772, z: 0.022820015, w: 0.99817514}
+      scale: {x: 1, y: 1, z: -1}
+    - name: Sawyer_3D_v41:HairStrand17
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.03219696, y: 0.11305532, z: 0.017517624}
+      rotation: {x: -0.16416602, y: -0.40017757, z: 0.2757506, w: 0.8584108}
+      scale: {x: 0.71441865, y: 0.82322294, z: 0.96767867}
+    - name: Sawyer_3D_v41:HairStrand18
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.04809555, y: 0.10478246, z: 0.017517624}
+      rotation: {x: -0.08081166, y: -0.5117714, z: 0.3242023, w: 0.79148746}
+      scale: {x: 0.71441865, y: 0.82322294, z: 0.96767867}
+    - name: Sawyer_3D_v41:HairStrand19
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: 0.010448964, y: 0.09835752, z: 0.029067507}
+      rotation: {x: -0.103084184, y: 0.99415463, z: 0.03208356, w: -0.00093637157}
+      scale: {x: 1, y: 1, z: -1}
+    - name: Sawyer_3D_v41:HairStrand20
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.0051530497, y: 0.1099884, z: 0.014107866}
+      rotation: {x: 0.004637823, y: 0.9931212, z: 0.09348909, w: 0.07034634}
+      scale: {x: 1, y: 1, z: -1}
+    - name: Sawyer_3D_v41:HairStrand35
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.07197843, y: 0.0769929, z: 0.0013202953}
+      rotation: {x: -0.26564267, y: 0.21085542, z: -0.2676116, w: 0.90186363}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand36
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.09189035, y: 0.07062734, z: -0.007092392}
+      rotation: {x: -0.22496086, y: 0.08487073, z: -0.25847477, w: 0.9356177}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand37
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.09189035, y: 0.07062734, z: -0.024853436}
+      rotation: {x: -0.13923617, y: -0.15660924, z: -0.20840229, w: 0.95533}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand38
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.10608976, y: 0.06499377, z: 0.02860673}
+      rotation: {x: 0.8912636, y: -0.15066172, z: 0.339171, w: -0.26060176}
+      scale: {x: 1.5684367, y: -0.4420334, z: 1.0352718}
+    - name: Sawyer_3D_v41:HairStrand39
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.09745978, y: 0.07094484, z: 0.048399653}
+      rotation: {x: -0.50904125, y: 0.29413036, z: -0.19055176, w: 0.78616434}
+      scale: {x: 1, y: 1, z: 1}
+    - name: Sawyer_3D_v41:HairStrand40
+      parentName: Sawyer_3D_v41:Hair
+      position: {x: -0.102042094, y: 0.073996186, z: 0.012240641}
+      rotation: {x: -0.3592699, y: 0.21984795, z: -0.30247512, w: 0.85504436}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  autoGenerateAvatarMappingIfUnspecified: 1
+  animationType: 2
+  humanoidOversampling: 1
+  avatarSetup: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 0
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

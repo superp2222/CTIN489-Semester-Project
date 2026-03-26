@@ -9,11 +9,23 @@ EditorBuildSettings:
     path: Assets/_Project/Scenes/Cutscene.unity
     guid: cd9a7d3685b8c5340a82b4dbb510de18
   - enabled: 1
-    path: Assets/_Project/Scenes/Room.unity
-    guid: c47df29871f850f43b11a3bfb0200d7b
+    path: Assets/_Project/Scenes/HospitalCutscene1.unity
+    guid: fe89c01150c64d042aa5cfbe263b01b1
   - enabled: 1
-    path: Assets/_Project/Scenes/GroundFloor.unity
-    guid: 7e1955d12f3d57741a789614df94b303
+    path: Assets/_Project/Scenes/Hospital F1.unity
+    guid: 7312700ca8c75f34080bfa8c7e0af194
+  - enabled: 1
+    path: Assets/_Project/Scenes/HospitalHallway.unity
+    guid: 9c1cdfa06464c6e48a7d3880a1b16f49
+  - enabled: 1
+    path: Assets/_Project/Scenes/HospitalCutscene2.unity
+    guid: fb095c0a4186cfe4282f3dbfe3e8e486
+  - enabled: 1
+    path: Assets/_Project/Scenes/HospitalEscape.unity
+    guid: 0c7190b8ceeecae41bbfbe63aeeed676
+  - enabled: 1
+    path: Assets/_Project/Scenes/End Scene.unity
+    guid: 93811bb88bb1ee945ba03cd4d866880c
   m_configObjects:
     com.unity.dt.app-ui: {fileID: 11400000, guid: 1b1c20d82303e4b5781c3ef50ac1449f, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}

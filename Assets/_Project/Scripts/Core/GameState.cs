@@ -6,6 +6,7 @@ public class GameState : MonoBehaviour
 
     public bool HasKey { get; private set; }
     public bool HasGroundKey{get; private set;}
+    public bool HasScrewdriver { get; private set; }
 
     void Awake()
     {
@@ -23,8 +24,14 @@ public class GameState : MonoBehaviour
         HasKey = value;
     }
 
+    public void SetHasScrewdriver(bool value)
+    {
+        HasScrewdriver = value;
+    }
+
     public void ResetRun()
     {
         HasKey = false;
+        HasScrewdriver = false;
     }
 }

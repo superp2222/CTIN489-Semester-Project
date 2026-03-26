@@ -23,15 +23,21 @@ public class SisterController : MonoBehaviour
 
     public float standClearance = 0.05f;
 
-    private CharacterController controller;
-    private float verticalVelocity;
-
-    private bool isCrouching = false;
-    private bool isSprinting = false;
+    [Header("Animation")]
+    public Animator animator;
+    public Transform visualModel;
+    public float modelTurnSpeed = 12f;
 
     [Header("Jump Audio")]
     public AudioSource audioSource;
     public AudioClip jumpSFX;
+
+    private CharacterController controller;
+    private float verticalVelocity;
+    private GameManager gameManager;
+
+    private bool isCrouching = false;
+    private bool isSprinting = false;
 
     private float originalHeight;
     private Vector3 originalCenter;
@@ -41,6 +47,16 @@ public class SisterController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         originalHeight = controller.height;
         originalCenter = controller.center;
+        gameManager = FindFirstObjectByType<GameManager>();
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        if (visualModel == null && animator != null)
+            visualModel = animator.transform;
+
+        if (animator != null)
+            animator.applyRootMotion = false;
     }
 
     void Start()
@@ -51,6 +67,9 @@ public class SisterController : MonoBehaviour
 
     void Update()
     {
+        if (gameManager != null && gameManager.IsPaused)
+            return;
+
         Vector2 lookInput = Mouse.current.delta.ReadValue();
         float mouseX = lookInput.x * mouseSensitivity;
         transform.Rotate(Vector3.up * mouseX);
@@ -73,6 +92,7 @@ public class SisterController : MonoBehaviour
         if (Keyboard.current.aKey.isPressed) x -= 1f;
         if (Keyboard.current.dKey.isPressed) x += 1f;
 
+        Vector3 inputDir = new Vector3(x, 0f, z).normalized;
         Vector3 move = (transform.right * x + transform.forward * z).normalized;
 
         float speed = moveSpeed;
@@ -85,6 +105,7 @@ public class SisterController : MonoBehaviour
         if (controller.isGrounded && Keyboard.current.spaceKey.wasPressedThisFrame && !isCrouching)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
             if (audioSource && jumpSFX)
                 audioSource.PlayOneShot(jumpSFX);
         }
@@ -96,16 +117,53 @@ public class SisterController : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+        RotateVisualModel(inputDir);
+        SetWalkingAnimation(inputDir.sqrMagnitude > 0.01f);
+    }
+
+    public void SetWalkingAnimation(bool isWalking)
+    {
+        if (animator == null) return;
+        animator.SetBool("IsWalking", isWalking);
+    }
+
+    public void RotateVisualToDirection(Vector3 worldDirection)
+    {
+        if (visualModel == null || worldDirection.sqrMagnitude < 0.0001f)
+            return;
+
+        Vector3 localDir = transform.InverseTransformDirection(worldDirection.normalized);
+        float targetY = Mathf.Atan2(localDir.x, localDir.z) * Mathf.Rad2Deg;
+
+        Quaternion targetRotation = Quaternion.Euler(0f, targetY, 0f);
+        visualModel.localRotation = Quaternion.Slerp(
+            visualModel.localRotation,
+            targetRotation,
+            modelTurnSpeed * Time.deltaTime
+        );
+    }
+
+    void RotateVisualModel(Vector3 inputDir)
+    {
+        if (visualModel == null || inputDir.sqrMagnitude < 0.01f)
+            return;
+
+        float targetY = Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg;
+
+        Quaternion targetRotation = Quaternion.Euler(0f, targetY, 0f);
+        visualModel.localRotation = Quaternion.Slerp(
+            visualModel.localRotation,
+            targetRotation,
+            modelTurnSpeed * Time.deltaTime
+        );
     }
 
     void SetCrouch(bool crouch)
     {
         isCrouching = crouch;
+
+        if (crouch)
+            isSprinting = false;
 
         if (crouch)
         {

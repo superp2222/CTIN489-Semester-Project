@@ -1,6 +1,5 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using TMPro;
 
 public class KeypadInteractable : MonoBehaviour, IInteractable
@@ -13,8 +12,9 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
     public string correctCode = "1234";
     public int codeLength = 4;
 
-    [Header("Door")]
-    public KeypadDoor targetDoor;
+    [Header("Doors")]
+    [Tooltip("All doors that should open when the correct code is entered.")]
+    public KeypadDoor[] targetDoors;
 
     [Header("UI Root (Panel)")]
     [Tooltip("A Canvas/Panel GameObject that contains the keypad UI. This will be enabled/disabled.")]
@@ -31,6 +31,10 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
     [Tooltip("Drag scripts here to disable while keypad is open (e.g., PlayerController, ThirdPersonController, PlayerInteractor, etc.).")]
     public MonoBehaviour[] disableWhileOpen;
 
+    [Header("Pause Menu CanvasGroup")]
+    [Tooltip("Assign the CanvasGroup used by the pause menu so keypad can disable its interaction while open.")]
+    public CanvasGroup pauseMenuCanvasGroup;
+
     [Header("Behavior")]
     public bool maskInput = true;
     public bool closeOnSuccess = true;
@@ -39,9 +43,12 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
     private string entered = "";
     private bool uiOpen = false;
 
-    void Awake()
-    {
-    }
+    // Save old pause menu state so we can restore it properly
+    private bool savedPauseInteractable;
+    private bool savedPauseBlocksRaycasts;
+    private float savedPauseAlpha;
+
+    public bool IsOpen => uiOpen;
 
     void Start()
     {
@@ -64,12 +71,31 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        // If the door is already open, keypad does nothing (optional).
-        if (targetDoor != null && targetDoor.IsOpen())
-            return;
+        // Optional: do nothing if door already opened
+        if (targetDoors != null && targetDoors.Length > 0)
+        {
+            bool anyDoor = false;
+            bool allOpen = true;
 
-        if (!uiOpen) OpenUI();
-        else CloseUI();
+            foreach (var door in targetDoors)
+            {
+                if (door == null) continue;
+                anyDoor = true;
+                if (!door.IsOpen())
+                {
+                    allOpen = false;
+                    break;
+                }
+            }
+
+            if (anyDoor && allOpen)
+                return;
+        }
+
+        if (!uiOpen)
+            OpenUI();
+        else
+            CloseUI();
     }
 
     public string GetPrompt()
@@ -82,7 +108,6 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
         if (!uiOpen) return;
         if (entered.Length >= codeLength) return;
 
-        // Only accept 0-9
         if (digit.Length != 1 || digit[0] < '0' || digit[0] > '9') return;
 
         entered += digit;
@@ -103,6 +128,7 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
     public void ClearAll()
     {
         if (!uiOpen) return;
+
         entered = "";
         RefreshDisplay();
         ClearStatus();
@@ -122,10 +148,15 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
         {
             SetStatus("ACCESS GRANTED");
 
-            if (targetDoor != null)
-                targetDoor.OpenDoor();
+            if (targetDoors != null)
+            {
+                foreach (var door in targetDoors)
+                {
+                    if (door != null)
+                        door.OpenDoor();
+                }
+            }
 
-            // Door cannot be closed, and keypad becomes “done”
             if (closeOnSuccess)
                 CloseUI();
         }
@@ -144,16 +175,27 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
         if (keypadUIRoot != null)
             keypadUIRoot.SetActive(true);
 
-        // Disable chosen scripts (movement, camera look, etc.)
+        // Disable chosen scripts
         if (disableWhileOpen != null)
         {
             foreach (var mb in disableWhileOpen)
             {
-                if (mb != null) mb.enabled = false;
+                if (mb != null)
+                    mb.enabled = false;
             }
         }
 
-        // Cursor for UI
+        // Temporarily disable pause menu interaction/raycast blocking
+        if (pauseMenuCanvasGroup != null)
+        {
+            savedPauseAlpha = pauseMenuCanvasGroup.alpha;
+            savedPauseInteractable = pauseMenuCanvasGroup.interactable;
+            savedPauseBlocksRaycasts = pauseMenuCanvasGroup.blocksRaycasts;
+
+            pauseMenuCanvasGroup.interactable = false;
+            pauseMenuCanvasGroup.blocksRaycasts = false;
+        }
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -169,20 +211,29 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
         if (keypadUIRoot != null)
             keypadUIRoot.SetActive(false);
 
-        // Re-enable scripts
+        // Re-enable chosen scripts
         if (disableWhileOpen != null)
         {
             foreach (var mb in disableWhileOpen)
             {
-                if (mb != null) mb.enabled = true;
+                if (mb != null)
+                    mb.enabled = true;
             }
         }
 
-        // Cursor back to gameplay
+        // Restore pause menu CanvasGroup state
+        if (pauseMenuCanvasGroup != null)
+        {
+            pauseMenuCanvasGroup.alpha = savedPauseAlpha;
+            pauseMenuCanvasGroup.interactable = savedPauseInteractable;
+            pauseMenuCanvasGroup.blocksRaycasts = savedPauseBlocksRaycasts;
+        }
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         entered = "";
+        ClearAll();
         RefreshDisplay();
         ClearStatus();
     }
@@ -197,13 +248,13 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
             return;
         }
 
-        // Masked as **** but only show how many typed
         inputDisplay.text = new string('*', entered.Length);
     }
 
     private void SetStatus(string msg)
     {
         if (statusText == null) return;
+
         statusText.gameObject.SetActive(true);
         statusText.text = msg;
     }
@@ -211,6 +262,7 @@ public class KeypadInteractable : MonoBehaviour, IInteractable
     private void ClearStatus()
     {
         if (statusText == null) return;
+
         statusText.text = "";
         statusText.gameObject.SetActive(false);
     }

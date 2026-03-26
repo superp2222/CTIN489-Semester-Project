@@ -25,6 +25,9 @@ public class Dialogue : MonoBehaviour
     [Header("Disable During Cutscene (optional)")]
     public MonoBehaviour[] disableWhilePlaying;
 
+    [Header("Pause")]
+    public GameManager gameManager;
+
     [Header("End Behavior")]
     public bool loadSceneOnFinish = false;
     public string nextSceneName = "GroundFloor";
@@ -39,6 +42,9 @@ public class Dialogue : MonoBehaviour
         if (dialogueUI == null)
             dialogueUI = FindFirstObjectByType<CutsceneDialogue>(FindObjectsInactive.Include);
 
+        if (gameManager == null)
+            gameManager = FindFirstObjectByType<GameManager>();
+
         if (cutsceneCamera != null)
             cutsceneCamera.gameObject.SetActive(false);
     }
@@ -52,7 +58,9 @@ public class Dialogue : MonoBehaviour
     {
         if (!playing) return;
 
-        // Guard against stale input on start
+        if (gameManager != null && gameManager.IsPaused)
+            return;
+
         if (Time.unscaledTime < ignoreInputUntil)
             return;
 
@@ -69,17 +77,14 @@ public class Dialogue : MonoBehaviour
         playing = true;
         index = 0;
 
-        // Block input briefly so line 0 isn't skipped
         ignoreInputUntil = Time.unscaledTime + inputBlockTime;
 
-        // Switch cameras
         if (gameplayCamera != null)
             gameplayCamera.gameObject.SetActive(false);
 
         if (cutsceneCamera != null)
             cutsceneCamera.gameObject.SetActive(true);
 
-        // Disable gameplay scripts
         if (disableWhilePlaying != null)
         {
             foreach (var mb in disableWhilePlaying)
@@ -89,7 +94,6 @@ public class Dialogue : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Show the first line immediately
         dialogueUI.ShowLine(lines[index]);
     }
 

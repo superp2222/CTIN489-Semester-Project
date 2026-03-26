@@ -7,6 +7,7 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
 
     [Header("Target")]
     public Barrier targetBarrier;
+    public GameObject targetGameObject;
 
     [Header("Button Behavior")]
     public bool canPressOnlyOnce = true;
@@ -43,6 +44,9 @@ public class ButtonInteractable : MonoBehaviour, IInteractable
 
         if (targetBarrier != null)
             targetBarrier.DisableBarrier();
+
+        if (targetGameObject != null)
+            targetGameObject.SetActive(!targetGameObject.activeSelf);
 
         // Optional: if you want the prompt to disappear instantly after press
         // you can disable the trigger collider, similar to your key pickup.

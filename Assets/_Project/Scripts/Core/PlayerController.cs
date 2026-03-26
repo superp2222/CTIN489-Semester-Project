@@ -18,8 +18,10 @@ public class PlayerController : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip jumpSFX;
 
-    private CharacterController controller;
-    private float verticalVelocity;
+    [Header("Animation")]
+    public Animator animator;
+    public Transform visualModel;
+    public float modelTurnSpeed = 12f;
 
     [Header("Crouch & Sprint")]
     public float crouchSpeed = 2.5f;
@@ -29,6 +31,10 @@ public class PlayerController : MonoBehaviour
     public float crouchHeightMultiplier = 0.5f;
 
     public float standClearance = 0.05f;
+
+    private CharacterController controller;
+    private float verticalVelocity;
+    private GameManager gameManager;
 
     private bool isCrouching = false;
     private bool isSprinting = false;
@@ -43,6 +49,27 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         originalHeight = controller.height;
         originalCenter = controller.center;
+        gameManager = FindFirstObjectByType<GameManager>();
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
+        if (visualModel == null && animator != null)
+        {
+            // Ensure the visual model is a child, so we never rotate
+            // the root transform that the camera follows.
+            if (animator.transform == transform && animator.transform.childCount > 0)
+            {
+                visualModel = animator.transform.GetChild(0);
+            }
+            else
+            {
+                visualModel = animator.transform;
+            }
+        }
+
+        if (animator != null)
+            animator.applyRootMotion = false;
     }
 
     void Start()
@@ -53,12 +80,13 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        // ===== YAW LOOK =====
+        if (gameManager != null && gameManager.IsPaused)
+            return;
+
         Vector2 lookInput = Mouse.current.delta.ReadValue();
         float mouseX = lookInput.x * mouseSensitivity;
         transform.Rotate(Vector3.up * mouseX);
 
-        // ===== CROUCH =====
         if (Keyboard.current.cKey.wasPressedThisFrame)
         {
             if (!isCrouching)
@@ -67,11 +95,9 @@ public class PlayerController : MonoBehaviour
                 SetCrouch(false);
         }
 
-        // ===== SPRINT =====
         if (Keyboard.current.leftShiftKey.wasPressedThisFrame)
             isSprinting = !isSprinting;
 
-        // ===== MOVEMENT =====
         float x = 0f;
         float z = 0f;
         if (Keyboard.current.wKey.isPressed) z += 1f;
@@ -79,6 +105,7 @@ public class PlayerController : MonoBehaviour
         if (Keyboard.current.aKey.isPressed) x -= 1f;
         if (Keyboard.current.dKey.isPressed) x += 1f;
 
+        Vector3 inputDir = new Vector3(x, 0f, z).normalized;
         Vector3 move = (transform.right * x + transform.forward * z).normalized;
 
         float currentSpeed = moveSpeed;
@@ -91,8 +118,12 @@ public class PlayerController : MonoBehaviour
         if (controller.isGrounded && Keyboard.current.spaceKey.wasPressedThisFrame && canJump && !isCrouching)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
             if (audioSource && jumpSFX)
                 audioSource.PlayOneShot(jumpSFX);
+
+            if (animator != null)
+                animator.SetTrigger("Jump");
         }
 
         verticalVelocity += gravity * Time.deltaTime;
@@ -102,16 +133,44 @@ public class PlayerController : MonoBehaviour
 
         controller.Move(velocity * Time.deltaTime);
 
-        if (Keyboard.current.escapeKey.wasPressedThisFrame)
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+        RotateVisualModel(inputDir);
+        UpdateAnimator(inputDir);
+    }
+
+    void RotateVisualModel(Vector3 inputDir)
+    {
+        // Never rotate the root transform; only rotate a child model.
+        if (visualModel == null || visualModel == transform || inputDir.sqrMagnitude < 0.01f)
+            return;
+
+        float targetY = Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg;
+        Quaternion targetRotation = Quaternion.Euler(0f, targetY, 0f);
+        visualModel.localRotation = Quaternion.Slerp(
+            visualModel.localRotation,
+            targetRotation,
+            modelTurnSpeed * Time.deltaTime
+        );
+    }
+
+    void UpdateAnimator(Vector3 inputDir)
+    {
+        if (animator == null) return;
+
+        bool isMoving = inputDir.sqrMagnitude > 0.01f;
+        bool isRunningNow = isMoving && isSprinting && !isCrouching;
+        bool isWalkingNow = isMoving && !isRunningNow && !isCrouching;
+
+        animator.SetBool("IsWalking", isWalkingNow);
+        animator.SetBool("IsRunning", isRunningNow);
+        animator.SetBool("IsCrouching", isCrouching);
     }
 
     void SetCrouch(bool crouch)
     {
         isCrouching = crouch;
+
+        if (crouch)
+            isSprinting = false;
 
         if (crouch)
         {
