@@ -7,7 +7,7 @@ public class ThirdPersonCameraFollow : MonoBehaviour
     public Transform target;
 
     [Header("Rig Offset (relative to target)")]
-    public Vector3 offset = new Vector3(0f, 1.6f, 0f);
+    public Vector3 offset = new Vector3(0f, 0.65f, 0f);
     public float followSmoothTime = 0.08f;
 
     [Header("Pitch")]
@@ -23,7 +23,7 @@ public class ThirdPersonCameraFollow : MonoBehaviour
 
     [Header("Camera Child")]
     public Transform cam;
-    public float desiredCameraDistance = 4.0f;
+    public float desiredCameraDistance = 1.5f;
     public float minCameraDistance = 0.6f;
     public float zoomSmoothTime = 0.05f;
 

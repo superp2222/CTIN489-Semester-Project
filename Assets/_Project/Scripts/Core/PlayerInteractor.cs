@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections.Generic;
 
 public class PlayerInteractor : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PlayerInteractor : MonoBehaviour
     public TMP_Text interactionPrompt;
 
     private IInteractable current;
+    private readonly List<IInteractable> nearbyInteractables = new List<IInteractable>();
     private PlayerCarryController carry;
 
     void Awake()
@@ -39,12 +41,15 @@ public class PlayerInteractor : MonoBehaviour
         }
 
         // Normal interact logic
+        current = GetCurrentInteractable();
         if (current != null)
         {
+            string prompt = current.GetPrompt();
+
             if (interactionPrompt != null)
             {
                 interactionPrompt.gameObject.SetActive(true);
-                interactionPrompt.text = current.GetPrompt();
+                interactionPrompt.text = prompt;
             }
 
             if (Keyboard.current.eKey.wasPressedThisFrame)
@@ -67,12 +72,17 @@ public class PlayerInteractor : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        current = other.GetComponentInParent<IInteractable>();
+        var interactable = other.GetComponentInParent<IInteractable>();
+        if (interactable != null && !nearbyInteractables.Contains(interactable))
+            nearbyInteractables.Add(interactable);
     }
 
     private void OnTriggerExit(Collider other)
     {
         var exited = other.GetComponentInParent<IInteractable>();
+        if (exited != null)
+            nearbyInteractables.Remove(exited);
+
         if (exited != null && exited == current)
             current = null;
     }
@@ -82,7 +92,34 @@ public class PlayerInteractor : MonoBehaviour
         if (interactionPrompt != null)
             interactionPrompt.gameObject.SetActive(false);
         current = null;
+        nearbyInteractables.Clear();
     }
 
-    
+    private IInteractable GetCurrentInteractable()
+    {
+        for (int i = nearbyInteractables.Count - 1; i >= 0; i--)
+        {
+            var interactable = nearbyInteractables[i];
+            if (interactable == null)
+            {
+                nearbyInteractables.RemoveAt(i);
+                continue;
+            }
+
+            if (IsValidInteractable(interactable))
+                return interactable;
+        }
+
+        return null;
+    }
+
+    private bool IsValidInteractable(IInteractable interactable)
+    {
+        if (interactable == null) return false;
+
+        if (interactable is IConditionalInteractable conditional && !conditional.CanInteract())
+            return false;
+
+        return !string.IsNullOrWhiteSpace(interactable.GetPrompt());
+    }
 }

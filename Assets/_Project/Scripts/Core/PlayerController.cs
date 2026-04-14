@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     [Header("Gravity & Jump")]
     public float gravity = -20f;
     public float jumpHeight = 1.2f;
+    [Tooltip("Time window after leaving ground during which a jump is still allowed.")]
+    public float coyoteTime = 0.15f;
 
     [Header("Mouse Look")]
     public float mouseSensitivity = 0.1f;
@@ -35,6 +37,8 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private float verticalVelocity;
     private GameManager gameManager;
+
+    private float coyoteTimer;
 
     private bool isCrouching = false;
     private bool isSprinting = false;
@@ -112,12 +116,22 @@ public class PlayerController : MonoBehaviour
         if (isCrouching) currentSpeed = crouchSpeed;
         else if (isSprinting) currentSpeed = sprintSpeed;
 
-        if (controller.isGrounded && verticalVelocity < 0f)
+        bool isGrounded = controller.isGrounded;
+
+        if (isGrounded)
+            coyoteTimer = coyoteTime;
+        else
+            coyoteTimer -= Time.deltaTime;
+
+        if (isGrounded && verticalVelocity < 0f)
             verticalVelocity = -2f;
 
-        if (controller.isGrounded && Keyboard.current.spaceKey.wasPressedThisFrame && canJump && !isCrouching)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && coyoteTimer > 0f && canJump && !isCrouching)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+            // Consume coyote time so we can't double-jump from the same window.
+            coyoteTimer = 0f;
 
             if (audioSource && jumpSFX)
                 audioSource.PlayOneShot(jumpSFX);

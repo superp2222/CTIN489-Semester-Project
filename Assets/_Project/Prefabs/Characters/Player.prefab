@@ -101,6 +101,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8333783503076939657}
+  - {fileID: 5328314069928463191}
   - {fileID: 4575493973544478168}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -216,10 +217,13 @@ MonoBehaviour:
   moveSpeed: 4.5
   gravity: -20
   jumpHeight: 1.2
+  coyoteTime: 0.15
   mouseSensitivity: 0.1
   audioSource: {fileID: 2147530580394727646}
   jumpSFX: {fileID: 8300000, guid: c28d653a2aff01e4c92a99599a5f55fd, type: 3}
   animator: {fileID: 0}
+  visualModel: {fileID: 0}
+  modelTurnSpeed: 12
   crouchSpeed: 2.5
   sprintSpeed: 8
   crouchHeightMultiplier: 0.5
@@ -273,8 +277,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerCarryController
   carryPoint: {fileID: 8333783503076939657}
+  lilyPoint: {fileID: 5328314069928463191}
   followSpeed: 20
   rotateSpeed: 120
+  carryPointTurnSpeed: 12
 --- !u!82 &2147530580394727646
 AudioSource:
   m_ObjectHideFlags: 0
@@ -372,6 +378,37 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &8440965109274745292
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5328314069928463191}
+  m_Layer: 0
+  m_Name: LilyPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5328314069928463191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8440965109274745292}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0.453, z: -0.398}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7099923028851735718}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &7580825988990796996
 PrefabInstance:
   m_ObjectHideFlags: 0

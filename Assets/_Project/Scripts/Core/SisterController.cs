@@ -10,6 +10,8 @@ public class SisterController : MonoBehaviour
     [Header("Gravity & Jump")]
     public float gravity = -20f;
     public float jumpHeight = 1.2f;
+    [Tooltip("Time window after leaving ground during which a jump is still allowed.")]
+    public float coyoteTime = 0.15f;
 
     [Header("Mouse Look")]
     public float mouseSensitivity = 0.1f;
@@ -36,6 +38,8 @@ public class SisterController : MonoBehaviour
     private float verticalVelocity;
     private GameManager gameManager;
 
+    private float coyoteTimer;
+
     private bool isCrouching = false;
     private bool isSprinting = false;
 
@@ -53,7 +57,18 @@ public class SisterController : MonoBehaviour
             animator = GetComponentInChildren<Animator>();
 
         if (visualModel == null && animator != null)
-            visualModel = animator.transform;
+        {
+            // Ensure the visual model is a child, so we never rotate
+            // the root transform that the camera follows.
+            if (animator.transform == transform && animator.transform.childCount > 0)
+            {
+                visualModel = animator.transform.GetChild(0);
+            }
+            else
+            {
+                visualModel = animator.transform;
+            }
+        }
 
         if (animator != null)
             animator.applyRootMotion = false;
@@ -99,15 +114,28 @@ public class SisterController : MonoBehaviour
         if (isCrouching) speed = crouchSpeed;
         else if (isSprinting) speed = sprintSpeed;
 
-        if (controller.isGrounded && verticalVelocity < 0f)
+        bool isGrounded = controller.isGrounded;
+
+        if (isGrounded)
+            coyoteTimer = coyoteTime;
+        else
+            coyoteTimer -= Time.deltaTime;
+
+        if (isGrounded && verticalVelocity < 0f)
             verticalVelocity = -2f;
 
-        if (controller.isGrounded && Keyboard.current.spaceKey.wasPressedThisFrame && !isCrouching)
+        if (Keyboard.current.spaceKey.wasPressedThisFrame && coyoteTimer > 0f && !isCrouching)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
+            // Consume coyote time so we can't double-jump from the same window.
+            coyoteTimer = 0f;
+
             if (audioSource && jumpSFX)
                 audioSource.PlayOneShot(jumpSFX);
+
+            if (animator != null)
+                animator.SetTrigger("Jump");
         }
 
         verticalVelocity += gravity * Time.deltaTime;
@@ -118,7 +146,7 @@ public class SisterController : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
 
         RotateVisualModel(inputDir);
-        SetWalkingAnimation(inputDir.sqrMagnitude > 0.01f);
+        UpdateAnimator(inputDir);
     }
 
     public void SetWalkingAnimation(bool isWalking)
@@ -127,9 +155,22 @@ public class SisterController : MonoBehaviour
         animator.SetBool("IsWalking", isWalking);
     }
 
+    void UpdateAnimator(Vector3 inputDir)
+    {
+        if (animator == null) return;
+
+        bool isMoving = inputDir.sqrMagnitude > 0.01f;
+        bool isRunningNow = isMoving && isSprinting && !isCrouching;
+        bool isWalkingNow = isMoving && !isRunningNow && !isCrouching;
+
+        animator.SetBool("IsWalking", isWalkingNow);
+        animator.SetBool("IsRunning", isRunningNow);
+        animator.SetBool("IsCrouching", isCrouching);
+    }
+
     public void RotateVisualToDirection(Vector3 worldDirection)
     {
-        if (visualModel == null || worldDirection.sqrMagnitude < 0.0001f)
+        if (visualModel == null || visualModel == transform || worldDirection.sqrMagnitude < 0.0001f)
             return;
 
         Vector3 localDir = transform.InverseTransformDirection(worldDirection.normalized);
@@ -145,7 +186,7 @@ public class SisterController : MonoBehaviour
 
     void RotateVisualModel(Vector3 inputDir)
     {
-        if (visualModel == null || inputDir.sqrMagnitude < 0.01f)
+        if (visualModel == null || visualModel == transform || inputDir.sqrMagnitude < 0.01f)
             return;
 
         float targetY = Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg;

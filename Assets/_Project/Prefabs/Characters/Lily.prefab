@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 3304239248038996396}
   - component: {fileID: 8760924355044375313}
   - component: {fileID: 8770146092260480590}
+  - component: {fileID: 4827089136482614307}
   m_Layer: 0
   m_Name: Lily
   m_TagString: Untagged
@@ -308,6 +309,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &4827089136482614307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6283969514806141558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a903e71f0e39492e859ef38eb794f9f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LilyInteractable
+  lilyMeter: {fileID: 0}
 --- !u!1 &7165973011537226359
 GameObject:
   m_ObjectHideFlags: 0

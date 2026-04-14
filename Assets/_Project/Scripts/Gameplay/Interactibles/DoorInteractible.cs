@@ -17,6 +17,17 @@ public class DoorInteractable : MonoBehaviour, IInteractable
         hinge = transform;
     }
 
+    private void OnDrawGizmos()
+    {
+        if (hinge == null) return;
+
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(hinge.position, 0.15f);
+
+        Gizmos.color = new Color(1f, 0.6f, 0f);
+        Gizmos.DrawLine(hinge.position, hinge.position + hinge.forward * 0.6f);
+    }
+
     public void Interact()
     {
         if (isBusy) return;
